@@ -22,7 +22,7 @@ int main(void)
     /* Initialize the library */
     if (!glfwInit()) return -1;
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -78,7 +78,7 @@ int main(void)
         ImGui::StyleColorsDark();
 
         // 需要指定GLSL版本, 也就是shader中的version
-        const char* glsl_version = "#version 330";
+        const char* glsl_version = "#version 430";
         ImGui_ImplOpenGL3_Init(glsl_version);
 
         test::Test* currentTest = nullptr;
