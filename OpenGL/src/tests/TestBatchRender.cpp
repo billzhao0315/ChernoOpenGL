@@ -1,6 +1,6 @@
 #include "TestBatchRender.h"
 
-#include "Renderer.h"
+#include "../Renderer.h"
 #include "imgui/imgui.h"
 
 #include "glm/glm.hpp"
@@ -38,6 +38,7 @@ namespace test
 
         m_VertexBuffer = std::make_unique<VertexBuffer>(positions, 11 * 8 * sizeof(float));
         VertexBufferLayout layout;
+        
         layout.Push<float>(4); // 坐标 x, y, z, w  w 齐次坐标, 对xyz进行缩放
         layout.Push<float>(4); // 颜色数据
         layout.Push<float>(2); // 纹理坐标
@@ -53,7 +54,7 @@ namespace test
         m_Texture[1] = std::make_unique<Texture>("res/textures/HazelLogo.png");
         for (size_t i = 0; i < 2; i++)
         {
-            m_Texture[i]->Bind(i);
+            m_Texture[i]->Bind(static_cast<unsigned int>(i));
         }
         int samplers[2] = { 0, 1 };
         m_Shader->SetUniform1iv("u_Textures", 2, samplers);

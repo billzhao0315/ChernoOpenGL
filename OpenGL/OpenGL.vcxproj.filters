@@ -75,6 +75,9 @@
     <ClCompile Include="src\tests\TestBatchRender.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestBatchRenderDynamic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -1397,6 +1400,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\tests\TestBatchRender.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestBatchRenderDynamic.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

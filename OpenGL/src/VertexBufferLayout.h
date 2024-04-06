@@ -34,7 +34,8 @@ public:
 	template<typename T>
 	void Push(unsigned int count)
 	{
-		static_assert(false);
+		std::cout << "should not here" << std::endl;
+		//static_assert(false);
 	}
 
 	template<>

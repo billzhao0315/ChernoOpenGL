@@ -2,9 +2,9 @@
 
 #include "Test.h"
 
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "Texture.h"
+#include "../VertexBuffer.h"
+#include "../VertexBufferLayout.h"
+#include "../Texture.h"
 
 #include <memory>
 
