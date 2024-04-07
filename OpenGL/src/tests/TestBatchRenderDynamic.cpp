@@ -6,20 +6,44 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include <array>
+
 namespace test
 {
+    struct Vec2
+    {
+        float x;
+        float y;
+    };
+
+    struct Vec3
+    {
+        float x;
+        float y;
+        float z;
+    };
+
+    struct Vec4
+    {
+        float x;
+        float y;
+        float z;
+        float a;
+    };
+
+    struct Vertex
+    {
+        Vec4 Positions;
+        Vec4 Color;
+        Vec2 CoordTex;
+        float index;
+    };
     TestBatchRenderDynamic::TestBatchRenderDynamic()
         :m_Proj(glm::ortho(0.0f, 640.0f, 0.0f, 480.0f, -1.0f, 1.0f)),
         m_View(glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0))),
-        m_Translation(glm::vec3(0, 0, 0))
+        m_Translation(glm::vec3(100, 0, 0))
 	{
-        struct Vertex
-        {
-            float Positions[4];
-            float Color[4];
-            float CoordTex[2];
-            float index;
-        };
+        
 
         GLCall(glGenVertexArrays(1, &m_QuadVA));
         GLCall(glBindVertexArray(m_QuadVA));
@@ -40,7 +64,7 @@ namespace test
         GLCall(glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, index)));
 
 
-        float positions[] = {
+        /*float positions[] = {
             100.0f, 100.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
             200.0f, 100.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
             200.0f, 200.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f,
@@ -51,7 +75,7 @@ namespace test
             400.0f, 200.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
             300.0f, 200.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
 
-        };
+        };*/
 
         unsigned int indices[] = {
             0, 1, 2, 2, 3, 0,
@@ -99,13 +123,41 @@ namespace test
 	{
 	}
 
+    std::array<Vertex, 4> createQuad(float x, float y, float textureId)
+    {
+        Vertex v0;
+        v0.Positions = { x, y, 0.0f, 1.0f };
+        v0.Color = { 1.0f, 0.0f, 0.0f, 1.0f };
+        v0.CoordTex = { 0.0f, 0.0f };
+        v0.index = textureId;
+
+        Vertex v1;
+        v1.Positions = { x+ 100, y, 0.0f, 1.0f };
+        v1.Color = { 1.0f, 0.0f, 0.0f, 1.0f };
+        v1.CoordTex = { 1.0f, 0.0f };
+        v1.index = textureId;
+
+        Vertex v2;
+        v2.Positions = { x+100, y+100, 0.0f, 1.0f };
+        v2.Color = { 1.0f, 0.0f, 0.0f, 1.0f };
+        v2.CoordTex = { 1.0f, 1.0f };
+        v2.index = textureId;
+
+        Vertex v3;
+        v3.Positions = { x, y+100, 0.0f, 1.0f };
+        v3.Color = { 1.0f, 0.0f, 0.0f, 1.0f };
+        v3.CoordTex = { 0.0f, 1.0f };
+        v3.index = textureId;
+        return { v0, v1, v2, v3 };
+    }
+
 	void TestBatchRenderDynamic::OnRender()
 	{
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 
-        float positions[] = {
+        /*float positions[] = {
             100.0f, 100.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
             200.0f, 100.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
             200.0f, 200.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f,
@@ -116,9 +168,17 @@ namespace test
             400.0f, 200.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
             300.0f, 200.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
 
-        };
+        };*/
+
+        auto quad1 = createQuad(m_Translation.x, 100.0f, 0.0f);
+        auto quad2 = createQuad(300.0f, 100.0f, 1.0f);
+
+        Vertex vertices[8];
+        memcpy(vertices, quad1.data(), quad1.size() * sizeof(Vertex));
+        memcpy(vertices + quad1.size(), quad2.data(), quad2.size() * sizeof(Vertex));
+
         GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_QuadVB));
-        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), positions));
+        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices));
         GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_QuadIB));
 
 
@@ -138,6 +198,7 @@ namespace test
 
 	void TestBatchRenderDynamic::OnImGuiRender()
 	{
-         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::SliderFloat("transfer", &m_Translation.x, 100.0f, 640.0f);
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 }
