@@ -78,6 +78,9 @@
     <ClCompile Include="src\tests\TestBatchRenderDynamic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\DrawCube.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -491,6 +494,7 @@
       <Filter>头文件</Filter>
     </None>
     <None Include="res\shaders\Batch.shader" />
+    <None Include="res\shaders\Cube.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">
@@ -1403,6 +1407,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\tests\TestBatchRenderDynamic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\DrawCube.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
